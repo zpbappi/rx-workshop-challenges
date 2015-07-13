@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Reactive.Concurrency;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
@@ -31,7 +32,7 @@ namespace Schedulers
             var query = Query(quotes);
 
             chartUpdater = query.BindToChart(chart, 30);
-            scheduler.Run(TimeSpan.FromSeconds(.01));
+            scheduler.Run(TimeSpan.FromSeconds(.1));
         }
 
         IObservable<StockQuote> GetQuotes(IScheduler scheduler, IEnumerable<StockQuote> quotes)
@@ -40,10 +41,8 @@ namespace Schedulers
             // HINT: Use both the scheduler and the quotes and think about how to create sources which are like events
             var subject = new Subject<StockQuote>();
 
-            quotes.ToObservable().Subscribe(quote =>
-            {
-                scheduler.Schedule(quote, new DateTimeOffset(quote.Date), (q, _) => subject.OnNext(q));
-            });
+            quotes.ToObservable()
+                .Subscribe(q => scheduler.Schedule(new DateTimeOffset(q.Date), () => subject.OnNext(q)));
 
             return subject;
         }
@@ -53,8 +52,9 @@ namespace Schedulers
             // TODO: Write a query to grab the Microsoft "MSFT" stock quotes and output the closing price
             // HINT: Make sure you include a property in the result which has a type of DateTime
 
-            //return quotes.Where(s => s.Symbol == "YHOO");
-            return quotes;
+            return quotes
+                .Where(s => s.Symbol == "MSFT")
+                .Select(q => new {q.Close, q.Date});
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
