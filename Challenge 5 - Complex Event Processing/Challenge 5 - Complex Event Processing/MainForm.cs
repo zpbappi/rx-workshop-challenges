@@ -53,9 +53,18 @@ namespace ComplexEventProcessing
             //       the past five trading days as well as the current close and date.
             // HINT: Try using Buffer.
 
-            return from quote in quotes
-                   where quote.Symbol == "MSFT"
-                   select new { quote.Close, quote.Date };
+            return quotes
+                .Where(q => q.Symbol == "MSFT")
+                .Buffer(5, 1)
+                .Select(
+                    b =>
+                        new
+                        {
+                            AvgHigh = b.Average(q => q.High),
+                            AvgLow = b.Average(q => q.Low),
+                            Date = b.Min(q => q.Date),
+                            Close = b.OrderBy(q => q.Date).First().Close
+                        });
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
