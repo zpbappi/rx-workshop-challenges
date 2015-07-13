@@ -12,7 +12,7 @@ Alternatively, you can download the unsolved version from
 [unsolved](https://github.com/zpbappi/rx-workshop-challenges/tree/unsolved) branch of this repository.
 
 ## Solved (so far)
-- [&nbsp;&nbsp;] Challenge 1 - Introduction to Rx
+- [x] Challenge 1 - Introduction to Rx
 - [&nbsp;&nbsp;] Challenge 2 - Unified Programming Model
 - [&nbsp;&nbsp;] Challenge 3 - Writing Queries
 - [&nbsp;&nbsp;] Challenge 4 - Schedulers

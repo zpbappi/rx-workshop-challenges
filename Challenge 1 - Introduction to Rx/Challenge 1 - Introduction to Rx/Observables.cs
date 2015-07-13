@@ -27,7 +27,7 @@ namespace IntroductionToRx
                 // HINT: Try creating a new type that implements IObservable<int>
                 //       and takes textChanged in the constructor.
 
-                return Observable.Never<int>();
+                return TextChanged.Select(s => s.Length).DistinctUntilChanged();
             }
         }
     }

@@ -16,15 +16,28 @@ namespace IntroductionToRx
                 t(text);
         }
 
+        private event Action<int> LengthChangedEvents;
+        private int previousLength = -1;
+
         public event Action<int> LengthChanged
         {
             add
             {
-                // TODO: Code to add a handler
+                LengthChangedEvents += value;
+                TextChanged += text =>
+                {
+                    if (text.Length == previousLength || LengthChangedEvents == null)
+                    {
+                        return;
+                    }
+
+                    previousLength = text.Length;
+                    LengthChangedEvents(text.Length);
+                };
             }
             remove
             {
-                // TODO: Code to remove a handler
+                LengthChangedEvents -= value;
             }
         }
     }
