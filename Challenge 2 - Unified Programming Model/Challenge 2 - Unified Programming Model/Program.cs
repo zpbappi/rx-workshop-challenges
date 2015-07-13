@@ -17,11 +17,16 @@ namespace UnifiedProgrammingModel
 
             // TODO: Convert txt.TextChanged to IObservable<EventPattern<EventArgs>> and assign it to textChanged.
             // HINT: Try using FromEventPattern.
-            var textChanged = Observable.Never<EventPattern<EventArgs>>();
+            var textChanged = Observable.FromEventPattern(txt, "TextChanged");
 
             // TODO: Convert BeginMatch/EndMatch to Func<string, IObservable<DictionaryWord[]>> and assign it to getSuggestions.
             // HINT: Try using FromAsyncPattern
-            var getSuggestions = new Func<string, IObservable<DictionaryWord[]>>(s => Observable.Never<DictionaryWord[]>());
+
+            var getSuggestions =
+                new Func<string, IObservable<DictionaryWord[]>>(
+                    s =>
+                        Observable.FromAsyncPattern<DictionaryWord[]>((cb, state) => BeginMatch(s, cb, state), EndMatch)()
+                    );
 
             var results = from _ in textChanged
                           let text = txt.Text
