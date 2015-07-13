@@ -14,7 +14,7 @@ Alternatively, you can download the unsolved version from
 ## Solved (so far)
 - [x] Challenge 1 - Introduction to Rx
 - [x] Challenge 2 - Unified Programming Model
-- [ ] Challenge 3 - Writing Queries
+- [x] Challenge 3 - Writing Queries
 - [ ] Challenge 4 - Schedulers
 - [ ] Challenge 5 - Complex Event Processing
 - [ ] Challenge 6 - Reactive Coincidence

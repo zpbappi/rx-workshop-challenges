@@ -27,6 +27,8 @@ namespace WritingQueries
                             .Select(_ => txt.Text)
                             .Do(text => Console.WriteLine("TextChanged: {0}", text))
                             .Where(text => text.Length >= 3)
+                            .Throttle(TimeSpan.FromMilliseconds(200))
+                            .DistinctUntilChanged()
                             .Do(text => Console.WriteLine("Lookup: {0}", text));
 
 
@@ -34,7 +36,7 @@ namespace WritingQueries
             // HINT: Try using Switch.
             var results = lookup
                           .Select(text => getSuggestions(text))
-                          .Merge();
+                          .Switch();
 
             using (results
                 .ObserveOn(lst)
