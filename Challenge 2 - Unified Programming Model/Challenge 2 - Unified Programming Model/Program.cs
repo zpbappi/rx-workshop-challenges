@@ -22,11 +22,7 @@ namespace UnifiedProgrammingModel
             // TODO: Convert BeginMatch/EndMatch to Func<string, IObservable<DictionaryWord[]>> and assign it to getSuggestions.
             // HINT: Try using FromAsyncPattern
 
-            var getSuggestions =
-                new Func<string, IObservable<DictionaryWord[]>>(
-                    s =>
-                        Observable.FromAsyncPattern<DictionaryWord[]>((cb, state) => BeginMatch(s, cb, state), EndMatch)()
-                    );
+            var getSuggestions = Observable.FromAsyncPattern<string, DictionaryWord[]>(BeginMatch, EndMatch);
 
             var results = from _ in textChanged
                           let text = txt.Text
