@@ -1,0 +1,8 @@
+﻿<Window x:Class="ReactiveCoincidence.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Canvas>
+        <Image x:Name="image" Width="200" Height="200" Canvas.Left="0" Canvas.Top="25" Source="/ReactiveCoincidence;component/Images/rx.png" />
+    </Canvas>
+</Window>
