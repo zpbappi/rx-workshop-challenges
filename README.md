@@ -15,7 +15,7 @@ Alternatively, you can download the unsolved version from
 - [x] Challenge 1 - Introduction to Rx
 - [x] Challenge 2 - Unified Programming Model
 - [x] Challenge 3 - Writing Queries
-- [ ] Challenge 4 - Schedulers
+- [x] Challenge 4 - Schedulers (Not sure if I have done it correctly)
 - [ ] Challenge 5 - Complex Event Processing
 - [ ] Challenge 6 - Reactive Coincidence
 - [ ] Challenge 7 - Programming the Cloud

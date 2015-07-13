@@ -31,15 +31,21 @@ namespace Schedulers
             var query = Query(quotes);
 
             chartUpdater = query.BindToChart(chart, 30);
-            scheduler.Run(TimeSpan.FromSeconds(.1));
+            scheduler.Run(TimeSpan.FromSeconds(.01));
         }
 
         IObservable<StockQuote> GetQuotes(IScheduler scheduler, IEnumerable<StockQuote> quotes)
         {
             // TODO: Create an observable source of stock quotes
             // HINT: Use both the scheduler and the quotes and think about how to create sources which are like events
+            var subject = new Subject<StockQuote>();
 
-            return Observable.Never<StockQuote>();
+            quotes.ToObservable().Subscribe(quote =>
+            {
+                scheduler.Schedule(quote, new DateTimeOffset(quote.Date), (q, _) => subject.OnNext(q));
+            });
+
+            return subject;
         }
 
         IObservable<object> Query(IObservable<StockQuote> quotes)
@@ -47,6 +53,7 @@ namespace Schedulers
             // TODO: Write a query to grab the Microsoft "MSFT" stock quotes and output the closing price
             // HINT: Make sure you include a property in the result which has a type of DateTime
 
+            //return quotes.Where(s => s.Symbol == "YHOO");
             return quotes;
         }
 
