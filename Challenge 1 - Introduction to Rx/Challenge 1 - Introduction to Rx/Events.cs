@@ -16,28 +16,29 @@ namespace IntroductionToRx
                 t(text);
         }
 
-        private event Action<int> LengthChangedEvents;
+        private event Action<int> LengthChangeListeners;
         private int previousLength = -1;
 
         public event Action<int> LengthChanged
         {
             add
             {
-                LengthChangedEvents += value;
-                TextChanged += text =>
+                LengthChangeListeners += value;
+                TextChanged += s =>
                 {
-                    if (text.Length == previousLength || LengthChangedEvents == null)
+                    var text = s ?? string.Empty;
+                    if (text.Length == previousLength || LengthChangeListeners == null)
                     {
                         return;
                     }
 
                     previousLength = text.Length;
-                    LengthChangedEvents(text.Length);
+                    LengthChangeListeners(text.Length);
                 };
             }
             remove
             {
-                LengthChangedEvents -= value;
+                LengthChangeListeners -= value;
             }
         }
     }
