@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -36,7 +37,17 @@ namespace ReactiveCoincidence
             // HINT: There are many ways to do this. Try to use the concepts of events with duration and aggregate
             //       to see one way to solve this problem.  Also don't forget the Subtract method given below.
 
-            var query = Observable.Never<Point>();
+
+
+            var query = Observable.Join(
+                mouseDown,
+                mouseMove,
+                _ => mouseUp,
+                _ => Observable.Empty<Unit>(),
+                (start, end) => end
+            )
+            .Buffer(2, 1)
+            .Select(b => Subtract(b.Last(), b.First()));
 
             query.Subscribe(delta =>
             {
