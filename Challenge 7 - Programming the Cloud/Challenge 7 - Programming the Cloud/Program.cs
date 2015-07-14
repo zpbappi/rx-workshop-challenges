@@ -17,7 +17,7 @@ namespace ProgrammingTheCloud
             // TODO: Change this scheduler to use the AppDomainScheduler
             var scheduler = new AppDomainScheduler("MyDomain");
 
-            Generate(0, x => x < 10, x => x + 1, x => x * x, Scheduler.ThreadPool)
+            Generate(0, x => x < 10, x => x + 1, x => x * x, scheduler)
                 .ObserveLocally()
                 .ForEach(Console.WriteLine);
 
@@ -60,29 +60,49 @@ namespace ProgrammingTheCloud
             {
                 // TODO: Rewrite this code to work in a distributed environment
                 // HINT: Closures are bad! Try looking at the various Scheduler overloads.
-                var current = initial;
-                return scheduler.Schedule(self =>
+                var state = new GenerateState
                 {
-                    if (condition(current))
+                    current = this.initial,
+                    condition = this.condition,
+                    iterate = this.iterate,
+                    observer = observer,
+                    resultSelector = this.resultSelector
+                };
+
+                return scheduler.Schedule(state, (st, self) =>
+                {
+                    if (st.condition(st.current))
                     {
-                        var result = resultSelector(current);
-                        observer.OnNext(result);
-                        current = iterate(current);
-                        self();
+                        var result = st.resultSelector(st.current);
+                        st.observer.OnNext(result);
+                        var newState = (GenerateState)st.Clone();
+                        newState.current = st.iterate(st.current);
+                        self(newState);
                     }
                     else
-                        observer.OnCompleted();
+                        st.observer.OnCompleted();
                 });
             }
 
             [Serializable]
-            class GenerateState
+            class GenerateState : ICloneable
             {
                 public T current;
                 public Func<T, bool> condition;
                 public Func<T, T> iterate;
                 public Func<T, R> resultSelector;
                 public IObserver<R> observer;
+                public object Clone()
+                {
+                    return new GenerateState
+                    {
+                        current = current,
+                        observer = observer,
+                        iterate = iterate,
+                        condition = condition,
+                        resultSelector = resultSelector
+                    };
+                }
             }
         }
     }

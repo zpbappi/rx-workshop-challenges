@@ -18,4 +18,4 @@ Alternatively, you can download the unsolved version from
 - [x] Challenge 4 - Schedulers (Not sure if I have done it correctly)
 - [x] Challenge 5 - Complex Event Processing (?? is optimized ??)
 - [x] Challenge 6 - Reactive Coincidence
-- [ ] Challenge 7 - Programming the Cloud
+- [x] Challenge 7 - Programming the Cloud
