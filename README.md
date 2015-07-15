@@ -6,7 +6,7 @@ Workshop is available at: https://channel9.msdn.com/Series/Rx-Workshop
 
 ## Original challenge
 You can download the original unsolved challenges from the workshop directly. 
-However, the links to challenges does not seem to work sometime.
+However, the links to challenges were not working last time I checked.
 
 Alternatively, you can download the unsolved version from 
 [unsolved](https://github.com/zpbappi/rx-workshop-challenges/tree/unsolved) branch of this repository.
